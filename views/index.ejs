@@ -8,9 +8,10 @@
 </head>
 <body>
     <ul>
-        <% arr.forEach(function(item){ %>
+        <% posts.forEach(function(post){ %>
           <li>
-              <%= item %>
+              <%= post.title %>
+              <%= post.body %>
           </li>
         <% }); %>
       </ul>

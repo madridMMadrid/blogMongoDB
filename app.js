@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const Post = require('./models/post');
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -13,11 +15,26 @@ const arr = [
     'test'
 ];
 
-app.get('/', (req, res) => res.render('index', {arr: arr}));
+app.get('/', (req, res) => {
+    Post.find({}).then(posts => {
+        // обращаемся к базе данных по сущьности и находим в ней весь обьект
+        res.render('index', {posts: posts});
+            // рендерим в index то что находится в сущьности
+    })
+});
+
+
+// res.render('index', {arr: arr}));
 
 app.get('/create', (req, res) => res.render('create'));
 app.post('/create', (req, res) => {
-    arr.push(req.body.text);
+    const {title, body} = req.body;
+    // arr.push(req.body.text);
+    Post.create({
+        title: title,
+        body: body
+    }).then(post => console.log(post.id))
+
     res.redirect('/');
 });
 
