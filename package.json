@@ -5,13 +5,18 @@
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "cross-env": "^5.2.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "jquery": "^3.3.1",
+    "mongoose": "^4.13.18"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cross-env PORT=3001 node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
