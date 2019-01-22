@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+<% include layout/header.ejs %> 
+
     <form method="POST">
         <input type="text" name="title">
         <!-- name=title улетает в базу в схему (в сущьность) -->
@@ -16,5 +9,5 @@
         <button type="submit">submit</button>
     </form>
     <!-- то что мы будем отдавать в базу данных -->
-</body>
-</html>
+
+<% include layout/footer.ejs %> 
