@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
-const Scheme = mongoose.Schema;
+const Schema = mongoose.Schema;
+const URLSlugs = require('mongoose-url-slugs');
+const tr = require('transliter');
 
-const scheme = new Scheme({
+const scheme = new Schema({
     // схема принимающая от формы по name нужные нам параметры
     title: {
         type: String,
@@ -9,6 +11,10 @@ const scheme = new Scheme({
     },
     body: {
         type: String
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 },
 {
@@ -16,6 +22,13 @@ const scheme = new Scheme({
     // для того что бы в базе по дефолту указывалось время создания и изменение коллекции
 });
 
+
+scheme.plugin(
+  URLSlugs('title', {
+    field: 'url',
+    generator: text => tr.slugify(text)
+  })
+);
 scheme.set('toJSON', {
     virtuals: true
     // это позволяет обращатся к id коллекции без _, как принято в mongodb

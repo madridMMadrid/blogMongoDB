@@ -12,11 +12,16 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "faker": "^4.1.0",
     "gulp-concat": "^2.6.1",
     "gulp-uglifyjs": "^0.6.2",
     "jquery": "^3.3.1",
+    "medium-editor": "^5.23.3",
     "mongoose": "^4.13.18",
-    "static-asset": "^0.6.0"
+    "mongoose-url-slugs": "^1.0.2",
+    "static-asset": "^0.6.0",
+    "transliter": "^2.2.1",
+    "turndown": "^5.0.1"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

@@ -1,43 +1,47 @@
-<% include layout/header.ejs %> 
-<div class="main">
+<% include layout/header.ejs %>
+
+  <div class="main">
     <div class="container">
       <div class="content">
-        <div class="post">
-          <div class="top">
-            <h2>Заголовок поста</h2>
-          </div>
-          <div class="body">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda tenetur quibusdam in possimus quidem, minus rerum repellendus eius fuga dolorem iusto fugiat eum voluptas veniam ex! Vitae, earum. Expedita corporis ut alias, soluta hic accusantium explicabo quae accusamus fuga eligendi?
-            </p>
-          </div>
-          <div class="bottom">
-            <div class="author">
-              Автор:
-              <a href="/">DaffyDuck</a>
+        <% for (var i = 0; i < posts.length; i++) { %>
+          <div class="post">
+            <div class="top">
+              <h2>
+                <%=posts[i].title %>
+              </h2>
             </div>
-            <a href="/">Комментарии</a>
-          </div>
-        </div>
-        <div class="post">
-          <div class="top">
-            <h2>Заголовок поста</h2>
-          </div>
-          <div class="body">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum vero aut odio distinctio rem praesentium corporis perferendis similique atque ducimus aliquam ea, voluptate eveniet voluptatibus temporibus fugit saepe alias eum!
-            </p>
-          </div>
-          <div class="bottom">
-            <div class="author">
-              Автор:
-              <a href="/">DaffyDuck</a>
+            <div class="body">
+              <p><%=posts[i].body %></p>
             </div>
-            <a href="/">Комментарии</a>
+            <div class="bottom">
+              <div class="author">
+                Автор:
+                <a href="/">DaffyDuck</a>
+              </div>
+              <a href="/">Комментарии</a>
+            </div>
           </div>
-        </div>
+          <% } %>
+
+            <div class="pagination">
+              <% if (current > 2) { %>
+                <a class="new" href="/archive/<%= Number(current) - 1 %>">← К новым</a>
+                <% } %>
+                  <% if (current == 2) { %>
+                    <a class="new" href="/">← На главную</a>
+                    <% } %>
+                      <% if (pages > 0 && current < pages) { %>
+                        <a class="old" href="/archive/<%= Number(current) + 1 %>">К старым →</a>
+                        <% } %>
+
+            </div>
+
+
       </div>
-      <% include layout/sidebar.ejs %> 
+
+      <% include layout/sidebar.ejs %>
+
     </div>
   </div>
-<% include layout/footer.ejs %> 
+
+  <% include layout/footer.ejs %>

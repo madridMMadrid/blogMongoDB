@@ -17,7 +17,8 @@ mongoose.connection
   .on('close', () => console.log('Database connection closed.'))
   .once('open', () => {
         const info = mongoose.connections[0];
-        console.log(`Connected to ${info.host}:${info.port}/${info.name}`)
+        console.log(`Connected to ${info.host}:${info.port}/${info.name}`);
+        // require('./mocker')(); // для генерации контента
   });
 mongoose.connect(config.MONGO_URL, { useMongoClient: true });
 
@@ -55,18 +56,22 @@ app.use(
 ); 
 
 // routers
-app.get('/', (req, res) => {
-  const id = req.session.userId;
-  const login = req.session.userLogin;
+// app.get('/', (req, res) => {
+//   const id = req.session.userId;
+//   const login = req.session.userLogin;
+//   res.render('index', {
+//     user: {
+//       id,
+//       login
+//     }
+//   });
+// });
 
-  res.render('index', {
-    user: {
-      id,
-      login
-    }
-  });
-});
+//  Теперь как бы главная страница на старте получается archive, поэтому сначала вызываем ее а уже в ней делаем роуты
+
+app.use('/', routes.archive);
 app.use('/api/auth', routes.auth);
+app.use('/post', routes.post);
 
 // catch 404 and forward to error handler
 // если страница не найдена
