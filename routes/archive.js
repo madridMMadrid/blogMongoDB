@@ -1,72 +1,46 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
+moment.locale('ru');
 
 const config = require('../config');
 const models = require('../models');
 
-// async await
-async function posts(req, res) {
-  const userId = req.session.userId;
-  const userLogin = req.session.userLogin;
-  const perPage = +config.PER_PAGE;
-	const page = req.params.page || 1;
-	
-	try {
-		const posts = await models.Post.find({})
-			.skip(perPage * page - perPage)
-			.limit(perPage)
-			.populate('owner')
-			.sort({createdAt: -1})
-
-		const count = await models.Post.count()
-			res.render('archive/index', {
-				posts,
-				current: page,
-				pages: Math.ceil(count / perPage),
-				user: {
-					id: userId,
-					login: userLogin
-				}
-			});
-	} catch (error) {
-			throw new Error('Server error')
-	}
-}
 
 
 // Promise
-// function posts(req, res) {
-//   const userId = req.session.userId;
-//   const userLogin = req.session.userLogin;
-//   const perPage = +config.PER_PAGE;
-//   const page = req.params.page || 1;
+function posts(req, res) {
+  const userId = req.session.userId;
+  const userLogin = req.session.userLogin;
+  const perPage = +config.PER_PAGE;
+  const page = req.params.page || 1;
 
-//   models.Post.find({})
-//     .skip(perPage * page - perPage)
-// 		.limit(perPage)
-// 		.populate('owner')
-// 		.sort({createdAt: -1})
-//     .then(posts => {
-//       models.Post.count()
-//         .then(count => {
-//           res.render('archive/index', {
-//             posts,
-//             current: page,
-//             pages: Math.ceil(count / perPage),
-//             user: {
-//               id: userId,
-//               login: userLogin
-//             }
-//           });
-//         })
-//         .catch(() => {
-// 					throw new Error('Server error')
-// 				});
-//     })
-//     .catch(() => {
-// 			throw new Error('Server error')
-// 		});
-// }
+  models.Post.find({})
+    .skip(perPage * page - perPage)
+		.limit(perPage)
+		.populate('owner')
+		.sort({createdAt: -1})
+    .then(posts => {
+      models.Post.count()
+        .then(count => {
+          res.render('archive/index', {
+            posts,
+            current: page,
+            pages: Math.ceil(count / perPage),
+            user: {
+              id: userId,
+              login: userLogin
+            }
+          });
+        })
+        .catch(() => {
+					throw new Error('Server error')
+				});
+    })
+    .catch(() => {
+			throw new Error('Server error')
+		});
+}
 
 // routers
 // из app.js мы приходим сюда и при вызове главной страницы вызываем функцию posts которая генерирует нам контент
@@ -89,13 +63,22 @@ router.get('/posts/:post', async (req, res, next) => {
     } else {
 			try {
 				const post = await models.Post.findOne({ url });
+				
 					if (!post) {
 							const err = new Error('Not Found');
 							err.status = 404;
 							next(err);
 					} else {
+
+						const comments = await models.Comment.find({
+							post: post.id,
+							parent: { $exists: false }
+						});
+						
 						res.render('post/post', {
 							post,
+							comments,
+							moment,
 							user: {
 								id: userId,
 								login: userLogin
