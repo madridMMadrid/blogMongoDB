@@ -35,6 +35,13 @@
         min-height: 100px;
         border: 1px solid $greyColor;
         background-color: $whiteColor;
+
+        ul {
+          list-style: none;
+          li {
+            padding: 2px 0 2px;
+          }
+        }
       }
     }
 
