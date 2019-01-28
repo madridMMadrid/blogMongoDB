@@ -5,7 +5,7 @@ const TurndownService = require('turndown');
 
 const models = require('./models');
 
-const owner = '5c4a01d80db37337916f27ed';
+const owner = '5c4b4f307c243e4361b28d0f';
 
 module.exports = () => {
     models.Post.remove().then(() => {

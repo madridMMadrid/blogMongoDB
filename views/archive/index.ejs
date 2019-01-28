@@ -20,7 +20,7 @@
                 Автор:
                 <a href="/users/<%=posts[i].owner.login %>"><%=posts[i].owner.login %></a>
               </div>
-              <a href="/">Комментарии</a>
+              <a href="/posts/<%=posts[i].url %>#/posts/<%=posts[i].id %>">Комментарии <%=posts[i].commentCount %></a>
             </div>
           </div>
           <% } %>

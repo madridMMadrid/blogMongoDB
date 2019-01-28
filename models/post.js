@@ -15,6 +15,10 @@ const scheme = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    commentCount: {
+        type: Number,
+        default: 0
     }
 },
 {
@@ -22,6 +26,16 @@ const scheme = new Schema({
     // для того что бы в базе по дефолту указывалось время создания и изменение коллекции
 });
 
+
+scheme.statics = {
+    incCommentCount(postId) {
+        return this.findByIdAndUpdate(
+            postId, 
+            { $inc: {commentCount: 1} },
+            { new: true }
+        )
+    }
+}
 
 scheme.plugin(
   URLSlugs('title', {
