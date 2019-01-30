@@ -8,38 +8,35 @@ const models = require('../models');
 
 
 
-// Promise
-function posts(req, res) {
+async function posts(req, res) {
   const userId = req.session.userId;
   const userLogin = req.session.userLogin;
   const perPage = +config.PER_PAGE;
   const page = req.params.page || 1;
 
-  models.Post.find({})
-    .skip(perPage * page - perPage)
-		.limit(perPage)
-		.populate('owner')
-		.sort({createdAt: -1})
-    .then(posts => {
-      models.Post.count()
-        .then(count => {
-          res.render('archive/index', {
-            posts,
-            current: page,
-            pages: Math.ceil(count / perPage),
-            user: {
-              id: userId,
-              login: userLogin
-            }
-          });
-        })
-        .catch(() => {
-					throw new Error('Server error')
-				});
+  try {
+    const posts = await models.Post.find({
+      status: 'published'
     })
-    .catch(() => {
-			throw new Error('Server error')
-		});
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .populate('owner')
+      .sort({ createdAt: -1 });
+
+    const count = await models.Post.count();
+
+    res.render('archive/index', {
+      posts,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      user: {
+        id: userId,
+        login: userLogin
+      }
+    });
+  } catch (error) {
+    throw new Error('Server Error');
+  }
 }
 
 // routers
@@ -62,7 +59,10 @@ router.get('/posts/:post', async (req, res, next) => {
         next(err);
     } else {
 			try {
-				const post = await models.Post.findOne({ url });
+				const post = await models.Post.findOne({ 
+					url,
+					status: 'published' 
+				});
 				
 					if (!post) {
 							const err = new Error('Not Found');

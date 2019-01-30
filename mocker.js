@@ -1,21 +1,28 @@
 // файл для генерасии контента а именно постов
 
 const faker = require('faker');
-const TurndownService = require('turndown');
+const tr = require('transliter');
 
 const models = require('./models');
 
-const owner = '5c4b4f307c243e4361b28d0f';
+const owner = '5c4b023ef5091e5154c3b009';
 
-module.exports = () => {
-    models.Post.remove().then(() => {
-        Array.from({length: 20}).forEach(() => {
-            const turndownService = new TurndownService();
-            models.Post.create({
-                title: faker.lorem.words(5),
-                body: turndownService.turndown(faker.lorem.words(100)),
-                owner
-            }).then(console.log).catch(console.log);
-        }
-    )}).catch(console.log);
-}
+module.exports = async () => {
+  try {
+    await models.Post.remove();
+
+    Array.from({ length: 20 }).forEach(async () => {
+      const title = faker.lorem.words(5);
+      const url = `${tr.slugify(title)}-${Date.now().toString(36)}`;
+      const post = await models.Post.create({
+        title,
+        body: faker.lorem.words(100),
+        url,
+        owner
+      });
+      console.log(post);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -36,7 +36,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "dev": "gulp & nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
