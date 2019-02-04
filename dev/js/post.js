@@ -54,10 +54,12 @@ $(function() {
   });
 
   // upload
-  $('#fileinfo').on('submit', function(e) {
-    e.preventDefault();
+  $('#file').on('change', function() {
+    // e.preventDefault();
 
-    var formData = new FormData(this);
+    var formData = new FormData();
+    formData.append('postId', $('#post-id').val());
+    formData.append('file', $('#file')[0].files[0]);
 
     $.ajax({
       type: 'POST',
@@ -65,12 +67,32 @@ $(function() {
       data: formData,
       processData: false,
       contentType: false,
-      success: function(r) {
-        console.log(r);
+      success: function(data) {
+        console.log(data);
+        $('#fileinfo').prepend(
+          '<div class="img-container"><img src="/uploads' +
+            data.filePath +
+            '" alt="" /></div>'
+        );
       },
       error: function(e) {
         console.log(e);
       }
     });
+  });
+
+
+  // insert img
+  $('.img-container').on('click', function() {
+    var imageId = $(this).attr('id');
+    var txt = $('#post-body');
+    var caretPos = txt[0].selectionStart;
+    var textAreaTxt = txt.val();
+    var txtToAdd = '![alt text](image' + imageId + ')';
+    txt.val(
+      textAreaTxt.substring(0, caretPos) +
+        txtToAdd +
+        textAreaTxt.substring(caretPos)
+    );
   });
 });

@@ -49,6 +49,7 @@ app.use(staticAsset(path.join(__dirname, 'public')));
 
 app.use(express.static(path.join(__dirname, 'public')));
     // указываем express статичный файл который нужно выдавать пользователю а именно папку public
+app.use('/uploads', express.static(path.join(__dirname, config.DESTINATION)));    
 app.use(
     '/script', // указываем конкретно что отдать
     express.static(path.join(__dirname, 'node_modules', 'jquery', 'dist'))

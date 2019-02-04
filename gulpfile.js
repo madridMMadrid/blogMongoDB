@@ -5,6 +5,7 @@ const cssnano = require('gulp-cssnano');
 const plumber = require('gulp-plumber');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglifyjs');
+var nodemon = require('gulp-nodemon');
 
 gulp.task('scss', () => {
   return gulp
@@ -32,6 +33,7 @@ gulp.task('scripts', () =>
     // .pipe(uglify())
     .pipe(gulp.dest('public/script'))
 );
+
 
 gulp.task('default', ['scss', 'scripts'], () => {
   gulp.watch('dev/scss/**/*.scss', ['scss']);
